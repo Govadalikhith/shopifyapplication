@@ -139,6 +139,7 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+            {featuredProducts.map((product) => (
               <div key={product.id} className="group relative">
                 <Link to={`/products/${product.id}`} className="block">
                   <div className="relative aspect-[3/4] overflow-hidden mb-6 bg-primary-100">
@@ -164,6 +165,7 @@ const Home = () => {
                   <ShoppingBag size={16} />
                 </button>
               </div>
+            ))}
           </div>
         </div>
       </section>
