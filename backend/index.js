@@ -19,12 +19,6 @@ app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 // Main Routes
 app.use('/api', apiRoutes);
 
-// SPA Fallback: Serve index.html for any non-API routes (Express 5 compatible named wildcard)
-app.get('/:path*', (req, res) => {
-  if (req.path.startsWith('/api')) return;
-  res.sendFile(path.join(__dirname, 'public/index.html'));
-});
-
 // Seed basic data if products empty
 const seedData = () => {
   const products = db.prepare('SELECT count(*) as count FROM products').get();
@@ -59,6 +53,15 @@ const seedData = () => {
 };
 
 seedData();
+
+// SPA Fallback: Serve index.html for any non-API routes
+// This uses a safe middleware catch-all that doesn't trigger path-to-regexp errors
+app.use((req, res) => {
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ error: 'API route not found' });
+  }
+  res.sendFile(path.join(__dirname, 'public/index.html'));
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
