@@ -19,8 +19,8 @@ app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 // Main Routes
 app.use('/api', apiRoutes);
 
-// SPA Fallback: Serve index.html for any non-API routes (Express 5 compatible wildcard)
-app.get('(.*)', (req, res) => {
+// SPA Fallback: Serve index.html for any non-API routes (Express 5 compatible named wildcard)
+app.get('/:path*', (req, res) => {
   if (req.path.startsWith('/api')) return;
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
