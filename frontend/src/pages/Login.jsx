@@ -17,6 +17,7 @@ const Login = () => {
     setLoading(true);
     try {
       await login(email, password);
+      console.log('Login successful for:', email);
       navigate('/');
     } catch (err) {
       setError(err.response?.data?.error || 'Authentication Failed.');
@@ -66,7 +67,7 @@ const Login = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-transparent border-b border-primary-900/10 py-4 focus:border-primary-900 outline-none transition-all font-light"
+                className="w-full bg-transparent border-b border-primary-900/30 py-4 focus:border-primary-900 outline-none transition-all font-light"
                 placeholder="id@aethera.co"
               />
             </div>
@@ -78,7 +79,7 @@ const Login = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-transparent border-b border-primary-900/10 py-4 focus:border-primary-900 outline-none transition-all font-light"
+                className="w-full bg-transparent border-b border-primary-900/30 py-4 focus:border-primary-900 outline-none transition-all font-light"
                 placeholder="••••••••"
               />
             </div>

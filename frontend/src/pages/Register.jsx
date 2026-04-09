@@ -78,7 +78,7 @@ const Register = () => {
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
-                className="w-full bg-transparent border-b border-primary-900/10 py-4 focus:border-primary-900 outline-none transition-all font-light"
+                className="w-full bg-transparent border-b border-primary-900/30 py-4 focus:border-primary-900 outline-none transition-all font-light"
                 placeholder="First and Surname"
               />
             </div>
@@ -90,7 +90,7 @@ const Register = () => {
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
-                className="w-full bg-transparent border-b border-primary-900/10 py-4 focus:border-primary-900 outline-none transition-all font-light"
+                className="w-full bg-transparent border-b border-primary-900/30 py-4 focus:border-primary-900 outline-none transition-all font-light"
                 placeholder="id@aethera.co"
               />
             </div>
@@ -103,7 +103,7 @@ const Register = () => {
                 minLength={6}
                 value={formData.password}
                 onChange={(e) => setFormData({...formData, password: e.target.value})}
-                className="w-full bg-transparent border-b border-primary-900/10 py-4 focus:border-primary-900 outline-none transition-all font-light"
+                className="w-full bg-transparent border-b border-primary-900/30 py-4 focus:border-primary-900 outline-none transition-all font-light"
                 placeholder="Min. 6 Characters"
               />
             </div>
