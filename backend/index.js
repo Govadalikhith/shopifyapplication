@@ -12,10 +12,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the frontend folder
-// (We serve both the source and the assets to be extremely resilient)
-app.use(express.static(path.join(__dirname, '../frontend')));
-app.use('/assets', express.static(path.join(__dirname, '../frontend/assets')));
+// Serve static files from the local public folder (pre-built frontend)
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/assets', express.static(path.join(__dirname, 'public/assets')));
 
 // Main Routes
 app.use('/api', apiRoutes);
@@ -23,7 +22,7 @@ app.use('/api', apiRoutes);
 // SPA Fallback: Serve index.html for any non-API routes
 app.get('*', (req, res) => {
   if (req.path.startsWith('/api')) return;
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 // Seed basic data if products empty
