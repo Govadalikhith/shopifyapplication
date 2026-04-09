@@ -7,6 +7,9 @@ import { useAuth } from '../context/AuthContext';
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [discountCode, setDiscountCode] = useState('');
+  const [appliedDiscountCode, setAppliedDiscountCode] = useState(null);
+  const [discountError, setDiscountError] = useState('');
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -58,7 +61,19 @@ const Cart = () => {
     }
   };
 
+  const handleApplyDiscount = () => {
+    if (discountCode.trim().toUpperCase() === 'AETHERA10') {
+      setAppliedDiscountCode('AETHERA10');
+      setDiscountError('');
+    } else {
+      setAppliedDiscountCode(null);
+      setDiscountError('Invalid discount code');
+    }
+  };
+
   const total = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const discountAmount = appliedDiscountCode ? total * 0.10 : 0;
+  const finalTotal = total - discountAmount;
 
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen bg-primary-50">
@@ -117,11 +132,39 @@ const Cart = () => {
             <div className="bg-white p-10 lg:sticky lg:top-40">
               <h2 className="text-2xl font-serif mb-8 pb-4 border-b border-primary-900/5">Check Out.</h2>
               
+              {/* Discount Section */}
+              <div className="mb-8 pb-8 border-b border-primary-900/5">
+                <label className="block text-[10px] uppercase tracking-widest text-primary-800/60 font-bold mb-4">Discount Code</label>
+                <div className="flex bg-primary-50">
+                  <input 
+                    type="text" 
+                    value={discountCode}
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                    placeholder="e.g. AETHERA10"
+                    className="flex-grow bg-transparent border-none px-4 py-3 text-sm focus:outline-none placeholder-primary-800/30 font-light"
+                  />
+                  <button 
+                    onClick={handleApplyDiscount}
+                    className="px-6 border-l border-white text-[10px] uppercase tracking-wider font-bold hover:bg-primary-900 hover:text-white transition-colors"
+                  >
+                    Apply
+                  </button>
+                </div>
+                {discountError && <p className="text-red-500 text-xs mt-3 italic">{discountError}</p>}
+                {appliedDiscountCode && <p className="text-green-600 text-xs mt-3 italic">Discount applied: -10%</p>}
+              </div>
+
               <div className="space-y-6 mb-12">
                 <div className="flex justify-between text-sm font-light text-primary-800/60">
                   <span>Subtotal</span>
                   <span>${total.toFixed(2)}</span>
                 </div>
+                {appliedDiscountCode && (
+                  <div className="flex justify-between text-sm font-light text-green-600">
+                    <span>Discount (10%)</span>
+                    <span>-${discountAmount.toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-sm font-light text-primary-800/60">
                   <span>Acquisition Fee</span>
                   <span>$0.00</span>
@@ -132,7 +175,7 @@ const Cart = () => {
                 </div>
                 <div className="pt-6 border-t border-primary-900/5 flex justify-between items-baseline">
                   <span className="text-xl font-serif">Total</span>
-                  <span className="text-3xl font-light text-primary-900">${total.toFixed(2)}</span>
+                  <span className="text-3xl font-light text-primary-900">${finalTotal.toFixed(2)}</span>
                 </div>
               </div>
 
