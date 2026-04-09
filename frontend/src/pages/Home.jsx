@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Play, ShieldCheck, Globe, Infinity as InfinityIcon, Quote, Star } from 'lucide-react';
 import api from '../api';
 
 const Home = () => {
@@ -51,6 +51,34 @@ const Home = () => {
                 <span className="text-[10px] uppercase tracking-widest font-bold">Watch Film</span>
               </button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Badges */}
+      <div className="bg-white border-y border-primary-900/10 py-10 px-6">
+        <div className="max-w-[1400px] mx-auto flex flex-wrap justify-between items-center gap-8 text-primary-900/60 font-light text-[11px] uppercase tracking-widest font-bold">
+          <div className="flex items-center space-x-4"><ShieldCheck size={18} className="text-primary-900/40" /><span>Secure Encrypted Checkout</span></div>
+          <div className="hidden md:block w-px h-6 bg-primary-900/10"></div>
+          <div className="flex items-center space-x-4"><Globe size={18} className="text-primary-900/40" /><span>Complimentary Global Dispatch</span></div>
+          <div className="hidden md:block w-px h-6 bg-primary-900/10"></div>
+          <div className="flex items-center space-x-4"><InfinityIcon size={18} className="text-primary-900/40" /><span>Lifetime Artifact Renovation</span></div>
+        </div>
+      </div>
+
+      {/* Featured Collections */}
+      <section className="py-24 px-6 bg-primary-50">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {['Apparel', 'Accessories', 'Electronics', 'Studio'].map((cat) => (
+              <Link key={cat} to={`/category/${cat}`} className="group relative aspect-[4/5] overflow-hidden bg-white hover:bg-primary-900 transition-colors duration-500 flex flex-col justify-between p-10 border border-primary-900/5">
+                <h3 className="text-3xl font-serif group-hover:text-white group-hover:italic transition-all">{cat}.</h3>
+                <div className="flex justify-between items-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-white">
+                  <span className="text-[10px] uppercase tracking-widest font-bold">Explore</span>
+                  <ArrowRight size={20} className="translate-x-0 group-hover:translate-x-2 transition-transform" />
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -115,16 +143,48 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Call to Action */}
+      {/* Testimonials */}
+      <section className="py-32 px-6 bg-primary-50 border-t border-primary-900/10">
+        <div className="max-w-[1400px] mx-auto text-center">
+          <Quote className="mx-auto mb-12 text-primary-900/20" size={48} />
+          <h2 className="text-4xl md:text-5xl font-serif italic mb-24">Echoes from the collective.</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 text-left">
+            {[
+              { text: "An extraordinary intersection of tactile quality and brutalist design. The H1 Headphones are unparalleled.", author: "E. Ryu", locale: "Tokyo, JP" },
+              { text: "The Raw Denim trousers age like architecture. Every fold is a testament to the rigorous construction.", author: "M. Vance", locale: "Berlin, DE" },
+              { text: "Beyond commerce. Receiving an artifact from Aethera feels like being trusted with a piece of the future.", author: "S. Al-Fayed", locale: "London, UK" }
+            ].map((review, i) => (
+              <div key={i} className="space-y-6">
+                <div className="flex space-x-1 text-primary-900"><Star size={12} fill="currentColor"/><Star size={12} fill="currentColor"/><Star size={12} fill="currentColor"/><Star size={12} fill="currentColor"/><Star size={12} fill="currentColor"/></div>
+                <p className="text-lg font-light leading-relaxed text-primary-800">"{review.text}"</p>
+                <div className="pt-6 border-t border-primary-900/10">
+                  <p className="text-[10px] uppercase tracking-widest font-bold mb-1">{review.author}</p>
+                  <p className="text-[10px] uppercase tracking-widest text-primary-800/40">{review.locale}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action / Newsletter */}
       <section className="py-40 bg-primary-900 text-white text-center">
         <div className="max-w-3xl mx-auto px-6">
           <h2 className="text-6xl md:text-8xl font-serif italic mb-12 italic">Evolve Your Experience.</h2>
           <p className="text-lg text-white/50 font-light mb-16 leading-relaxed">
             Join the Aethera collective for exclusive access to archival releases and molecular design studies.
           </p>
-          <button className="border border-white py-4 px-12 uppercase tracking-widest text-[10px] font-bold hover:bg-white hover:text-primary-900 transition-all">
-            Join the Collective
-          </button>
+          <form className="flex flex-col sm:flex-row max-w-lg mx-auto border-b border-white/30 focus-within:border-white transition-colors pb-2" onSubmit={(e) => { e.preventDefault(); alert('Subscribed to the collective.'); }}>
+            <input 
+              type="email" 
+              placeholder="Enter your email address" 
+              required
+              className="flex-grow bg-transparent outline-none px-4 py-3 placeholder-white/30 text-white text-sm font-light"
+            />
+            <button type="submit" className="uppercase tracking-widest text-[10px] font-bold px-6 hover:text-white/50 transition-colors mt-4 sm:mt-0">
+              Subscribe
+            </button>
+          </form>
         </div>
       </section>
     </div>

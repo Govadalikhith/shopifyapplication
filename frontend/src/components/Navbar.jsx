@@ -41,7 +41,12 @@ const Navbar = () => {
 
   return (
     <>
-      <header className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'premium-blur py-3' : 'bg-transparent py-5'}`}>
+      {/* Announcement Bar */}
+      <div className="bg-primary-900 text-white text-center py-2 px-4 flex justify-center items-center relative z-[60]">
+        <span className="text-[10px] uppercase tracking-widest font-bold">Complimentary global dispatch on all archival artifacts.</span>
+      </div>
+
+      <header className={`fixed left-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'top-0 premium-blur py-3' : 'top-8 bg-transparent py-5'}`}>
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex justify-between items-center">
           
           {/* Mobile Menu Toggle */}
