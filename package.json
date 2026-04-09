@@ -1,0 +1,13 @@
+{
+  "name": "shopifyapplication-root",
+  "version": "1.0.0",
+  "description": "Root delegator for Render deployment",
+  "scripts": {
+    "start": "node backend/index.js",
+    "build": "cd frontend && npm install && npm run build && mkdir -p ../backend/public && cp -r dist/* ../backend/public/ && cd ../backend && npm install",
+    "postinstall": "cd backend && npm install && cd ../frontend && npm install"
+  },
+  "dependencies": {
+    "express": "^5.0.0"
+  }
+}
