@@ -1,10 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Play, ShieldCheck, Globe, Infinity as InfinityIcon, Quote, Star } from 'lucide-react';
+import { ArrowRight, Play, ShieldCheck, Globe, Infinity as InfinityIcon, Quote, Star, ShoppingBag } from 'lucide-react';
 import api from '../api';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAddToCart = async (e, product) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    try {
+      await api.post('/cart', { product_id: product.id, quantity: 1 });
+      navigate('/cart');
+    } catch (error) {
+      alert('Failed to add to cart');
+    }
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -120,25 +139,31 @@ const Home = () => {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-            {featuredProducts.map((product) => (
-              <Link key={product.id} to={`/products/${product.id}`} className="group block">
-                <div className="relative aspect-[3/4] overflow-hidden mb-6 bg-primary-100">
-                  <img 
-                    src={product.image_url} 
-                    alt={product.name}
-                    className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-[1.5s] ease-out"
-                  />
-                  <div className="absolute inset-0 bg-primary-900/0 group-hover:bg-primary-900/10 transition-all"></div>
-                </div>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-[9px] uppercase tracking-widest text-primary-800/40 mb-2">{product.category}</p>
-                    <h4 className="text-xl font-serif group-hover:italic transition-all">{product.name}</h4>
+              <div key={product.id} className="group relative">
+                <Link to={`/products/${product.id}`} className="block">
+                  <div className="relative aspect-[3/4] overflow-hidden mb-6 bg-primary-100">
+                    <img 
+                      src={product.image_url} 
+                      alt={product.name}
+                      className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-[1.5s] ease-out"
+                    />
+                    <div className="absolute inset-0 bg-primary-900/0 group-hover:bg-primary-900/10 transition-all"></div>
                   </div>
-                  <p className="text-sm font-light text-primary-800/60">${product.price.toFixed(2)}</p>
-                </div>
-              </Link>
-            ))}
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="text-[9px] uppercase tracking-widest text-primary-800/40 mb-2">{product.category}</p>
+                      <h4 className="text-xl font-serif group-hover:italic transition-all">{product.name}</h4>
+                    </div>
+                    <p className="text-sm font-light text-primary-800/60">${product.price.toFixed(2)}</p>
+                  </div>
+                </Link>
+                <button 
+                  onClick={(e) => handleAddToCart(e, product)}
+                  className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 shadow-sm border border-primary-900/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all hover:bg-primary-900 hover:text-white z-10"
+                >
+                  <ShoppingBag size={16} />
+                </button>
+              </div>
           </div>
         </div>
       </section>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ShoppingBag, ArrowLeft, Star, Heart, Share2, Shield, Truck, RefreshCcw, ShieldCheck, ChevronDown, ChevronUp } from 'lucide-react';
 import api from '../api';
 import { useAuth } from '../context/AuthContext';

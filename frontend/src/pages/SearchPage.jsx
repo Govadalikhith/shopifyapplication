@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { Search as SearchIcon, ShoppingBag, ArrowRight } from 'lucide-react';
 import api from '../api';
+import { useAuth } from '../context/AuthContext';
 
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -9,6 +10,21 @@ const SearchPage = () => {
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState(q);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleAddToCart = async (product) => {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+    try {
+      await api.post('/cart', { product_id: product.id, quantity: 1 });
+      navigate('/cart');
+    } catch (error) {
+      alert('Failed to add to cart');
+    }
+  };
 
   useEffect(() => {
     api.get('/products').then(r => { setAllProducts(r.data); setLoading(false); }).catch(() => setLoading(false));
@@ -98,9 +114,12 @@ const SearchPage = () => {
                     <Link to={`/products/${product.id}`}><h3 className="text-lg font-serif mb-3 group-hover:italic transition-all">{product.name}</h3></Link>
                     <div className="flex justify-between items-center">
                       <span className="font-light">${product.price.toFixed(2)}</span>
-                      <Link to={`/products/${product.id}`} className="w-9 h-9 rounded-full border border-primary-900/10 flex items-center justify-center hover:bg-primary-900 hover:text-white transition-all">
+                      <button 
+                        onClick={() => handleAddToCart(product)}
+                        className="w-9 h-9 rounded-full border border-primary-900/10 flex items-center justify-center hover:bg-primary-900 hover:text-white transition-all"
+                      >
                         <ShoppingBag size={14} />
-                      </Link>
+                      </button>
                     </div>
                   </div>
                 </div>

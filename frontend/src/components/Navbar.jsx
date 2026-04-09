@@ -11,6 +11,15 @@ const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [collectionsOpen, setCollectionsOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    if (user) {
+      api.get('/cart').then(r => setCartCount(r.data.reduce((sum, item) => sum + item.quantity, 0))).catch(() => {});
+    } else {
+      setCartCount(0);
+    }
+  }, [user]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -95,8 +104,13 @@ const Navbar = () => {
             </button>
             {user ? (
               <>
-                <Link to="/cart" className="text-primary-900/70 hover:text-primary-900 transition-colors" title="Cart">
+                <Link to="/cart" className="relative text-primary-900/70 hover:text-primary-900 transition-colors" title="Cart">
                   <ShoppingBag size={20} />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-accent-600 text-white text-[8px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                      {cartCount}
+                    </span>
+                  )}
                 </Link>
                 <button onClick={handleLogout} className="hidden sm:block text-primary-900/70 hover:text-red-500 transition-colors" title="Sign Out">
                   <LogOut size={18} />
